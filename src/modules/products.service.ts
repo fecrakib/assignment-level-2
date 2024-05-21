@@ -26,10 +26,16 @@ const updateProductById = async (id: string, updateData: Partial<TProduct>) => {
     return await product.save();
 };
 
+const deleteProductById= async (id:string)=>{
+    const product=await Product.findByIdAndDelete(id);
+    return product;
+}
+
 export const ProductServices={
     createProduct,
     getAllProducts,
     singleProductGetById,
-    updateProductById
+    updateProductById,
+    deleteProductById,
 }
 
