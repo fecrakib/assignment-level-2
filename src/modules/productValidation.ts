@@ -25,5 +25,8 @@ const ProductValidationSchema = z.object({
     inventory: InventoryValidationSchema,
 });
 
+// Define the Zod schema for updating a product
+const UpdateProductSchema = ProductValidationSchema.partial();
+
 // Export the schemas for use
-export { ProductValidationSchema  };
+export { ProductValidationSchema,UpdateProductSchema  };

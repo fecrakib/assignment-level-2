@@ -16,9 +16,20 @@ const singleProductGetById= async (id:string)=>{
     return result;
 } 
 
+// for update
+const updateProductById = async (id: string, updateData: Partial<TProduct>) => {
+    const product = await Product.findById(id);
+    if (!product) {
+        return null;
+    }
+    Object.assign(product, updateData);
+    return await product.save();
+};
+
 export const ProductServices={
     createProduct,
     getAllProducts,
     singleProductGetById,
+    updateProductById
 }
 

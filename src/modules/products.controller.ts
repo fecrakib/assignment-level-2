@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './products.service';
-import { ProductValidationSchema } from './productValidation';
+import { ProductValidationSchema, UpdateProductSchema } from './productValidation';
 
 
 const createProduct=async (req:Request,res:Response)=>{
@@ -34,7 +34,7 @@ const getAllProducts=async (req:Request,res:Response)=>{
  
     try {
      
-        const productData=req.body;
+      
         const result =await ProductServices.getAllProducts();
         if (result.length >0) {
             res.json({
@@ -64,6 +64,7 @@ const singleProductById= async (req:Request,res:Response)=>{
     try {
             const productId=req.params.id;
             const result= await ProductServices.singleProductGetById(productId);
+        
             if (result) {
                 res.json({
                     success: true,
@@ -89,9 +90,37 @@ const singleProductById= async (req:Request,res:Response)=>{
 
 }
 
+//Update Product Information
+const updateProductById = async (req: Request, res: Response) => {
+    try {
+        const productId = req.params.productId;  // Ensure this matches your route parameter
+        const updateData = UpdateProductSchema.parse(req.body);
+        const result = await ProductServices.updateProductById(productId, updateData);
+        if (result) {
+            res.json({
+                success: true,
+                message: "Product updated successfully!",
+                data: result,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Could not update product!",
+            error: error,
+        });
+    }
+};
+
 export const ProductController={
     createProduct,
     getAllProducts,
     singleProductById,
+    updateProductById,
 
 }
