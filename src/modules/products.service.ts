@@ -6,6 +6,13 @@ const createProduct=async (payLoad:TProduct)=>{
      const result= await Product.create(payLoad);
      return result.save() ;
 }
-export const ProductServices={
-    createProduct
+const getAllProducts = async()=>{
+    const result=await Product.find();
+    return result;
 }
+
+export const ProductServices={
+    createProduct,
+    getAllProducts,
+}
+

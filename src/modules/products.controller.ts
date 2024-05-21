@@ -26,7 +26,32 @@ const createProduct=async (req:Request,res:Response)=>{
 
 }
 
+// getall products
+const getAllProducts=async (req:Request,res:Response)=>{
+ 
+    try {
+     
+        const productData=req.body;
+        const result =await ProductServices.getAllProducts();
+        res.json(({
+            success:true,
+            message:"Product  are fetched successfully ",
+            data:result,
+        }))
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Could not found product!",
+            error: error
+          });
+        
+    }
+}
+
+
 export const ProductController={
-    createProduct
+    createProduct,
+    getAllProducts,
 
 }
