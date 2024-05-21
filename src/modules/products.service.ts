@@ -1,3 +1,4 @@
+import { string } from "zod";
 import { Product } from "./porducts.model";
 import { TProduct } from "./products.interfece";
 
@@ -31,11 +32,25 @@ const deleteProductById= async (id:string)=>{
     return product;
 }
 
+// search option
+const searchProducts = async (searchTerm: string) => {
+    const regex = new RegExp(searchTerm, 'i');
+    const result = await Product.find({
+        $or: [
+            { name: { $regex: regex } },
+            { description: { $regex: regex } },
+            { category: { $regex: regex } },
+            { tags: { $in: [searchTerm] } }
+        ]
+    });
+    return result;
+};
 export const ProductServices={
     createProduct,
     getAllProducts,
     singleProductGetById,
     updateProductById,
     deleteProductById,
+    searchProducts,
 }
 

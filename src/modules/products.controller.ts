@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './products.service';
 import { ProductValidationSchema, UpdateProductSchema } from './productValidation';
+import { Product } from './porducts.model';
 
 
 const createProduct=async (req:Request,res:Response)=>{
@@ -144,11 +145,40 @@ const deleteProductById= async (req:Request,res:Response)=>{
     }
 }
 
+// search option
+const searchProducts = async (req: Request, res: Response) => {
+    try {
+        const searchTerm = req.query.searchTerm as string;
+        const result = await ProductServices.searchProducts(searchTerm);
+        if (result.length > 0) {
+            res.json({
+                success: true,
+                message: `Products matching search term '${searchTerm}' fetched successfully!`,
+                data: result,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: `No products found matching search term '${searchTerm}'`,
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Could not search products!",
+            error: error,
+        });
+    }
+};
+
+
+
 export const ProductController={
     createProduct,
     getAllProducts,
     singleProductById,
     updateProductById,
     deleteProductById,
+    searchProducts,
 
 }
