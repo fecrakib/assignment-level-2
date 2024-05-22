@@ -1,5 +1,16 @@
 import mongoose, { Schema, Document, Model, model } from 'mongoose';
-import {TInventory, TProduct, TVariant} from './products.interfece'
+import {TInventory, TProduct, TProductPurchase, TVariant} from './products.interfece'
+
+const orderSchema = new Schema <TProductPurchase> ({
+    email: { type: String, required: true, trim: true },
+    productId: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true }
+}, {
+    timestamps: true
+})
+
+
 // Define the schema for a variant
 const VariantSchema = new Schema<TVariant> ({
     type: { type: String, required: true },
@@ -24,3 +35,7 @@ const ProductSchema= new Schema<TProduct> ({
 });
 
 export const Product= model <TProduct>('Product',ProductSchema)
+
+
+// create model
+export const Order = model <TProductPurchase> ('Order',orderSchema)

@@ -1,6 +1,7 @@
 import { string } from "zod";
-import { Product } from "./porducts.model";
-import { TProduct } from "./products.interfece";
+import { Order, Product} from "./porducts.model";
+import { TProduct, TProductPurchase } from "./products.interfece";
+
 
 
 const createProduct=async (payLoad:TProduct)=>{
@@ -45,6 +46,12 @@ const searchProducts = async (searchTerm: string) => {
     });
     return result;
 };
+
+// create a new order
+export const creteOrder = async (orderData: TProductPurchase)=>{
+    const orderProduct =new Order (orderData);
+    return await orderProduct .save()
+}
 export const ProductServices={
     createProduct,
     getAllProducts,
@@ -52,5 +59,6 @@ export const ProductServices={
     updateProductById,
     deleteProductById,
     searchProducts,
+   
 }
 

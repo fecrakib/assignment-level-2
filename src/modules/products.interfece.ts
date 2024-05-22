@@ -22,3 +22,10 @@ export type TProduct = {
     variants: TVariant[];
     inventory: TInventory;
 };
+
+export type TProductPurchase={
+    email: string;
+    productId: string;
+    price: number;
+    quantity: number;
+}

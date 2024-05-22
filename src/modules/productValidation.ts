@@ -24,6 +24,7 @@ const ProductValidationSchema = z.object({
     variants: z.array(VariantValidationSchema),
     inventory: InventoryValidationSchema,
 });
+// Create a zod schema for TProductPurchase
 
 // Define the Zod schema for updating a product
 const UpdateProductSchema = ProductValidationSchema.partial();

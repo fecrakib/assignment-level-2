@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
-import { ProductServices } from './products.service';
-import { ProductValidationSchema, UpdateProductSchema } from './productValidation';
+import { ProductServices, creteOrder} from './products.service';
+import { ProductValidationSchema, UpdateProductSchema, } from './productValidation';
+import { z } from "zod";
 import { Product } from './porducts.model';
+import { TProductPurchase } from './products.interfece';
+import { orderSchema } from './ordervalidation';
+
 
 
 const createProduct=async (req:Request,res:Response)=>{
@@ -63,7 +67,7 @@ const getAllProducts=async (req:Request,res:Response)=>{
 const singleProductById= async (req:Request,res:Response)=>{
     
     try {
-            const productId=req.params.id;
+            const productId=req.params.productId;
             const result= await ProductServices.singleProductGetById(productId);
         
             if (result) {
@@ -171,8 +175,29 @@ const searchProducts = async (req: Request, res: Response) => {
     }
 };
 
+// Create a new order
 
-
+export const createOrderHandler =async (req:Request,res:Response)=>{
+    try {
+       const orderData = orderSchema .parse (req.body)
+       const newOrder = await creteOrder(orderData);
+   
+   
+       res.status(201).json({
+           success: true,
+           message: 'Order created successfully!',
+           data: newOrder
+       });
+   
+    } catch (error) {
+     
+       res.status(400).json({
+           success: false,
+           message: 'Order creation failed!',
+      
+       });
+    }
+   }
 export const ProductController={
     createProduct,
     getAllProducts,
@@ -180,5 +205,7 @@ export const ProductController={
     updateProductById,
     deleteProductById,
     searchProducts,
+    
+
 
 }
