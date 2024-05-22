@@ -11,7 +11,8 @@ router.post('/',ProductController.createProduct);
  router.get('/:productId', ProductController.singleProductById)
 
  router.delete('/:productId', ProductController.deleteProductById);
- router.get('/search', ProductController.searchProducts);
+ router.get('/', ProductController.searchProducts);
+
 const orderRouter= express.Router()
  orderRouter.post ('/',createOrderHandler)
  orderRouter.get('/',getAllOrders) 

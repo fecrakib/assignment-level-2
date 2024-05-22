@@ -1,5 +1,5 @@
 import { string } from "zod";
-import { Order, Product} from "./porducts.model";
+import { Order,  Product} from "./porducts.model";
 import { TProduct, TProductPurchase } from "./products.interfece";
 
 
@@ -57,6 +57,31 @@ export const creteOrder = async (orderData: TProductPurchase)=>{
 export const getAllOrder = async () =>{
     return await Order.find()
 }
+
+// update inventory 
+export const updateInventory = async (productId: string, orderedQuantity: number) => {
+    try {
+        const product = await Product.findById(productId);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+       
+        if (orderedQuantity > product.inventory.quantity) {
+            throw new Error('Insufficient stock');
+        }
+
+        product.inventory.quantity -= orderedQuantity;
+        
+        
+        product.inventory.inStock = product.inventory.quantity > 0;
+
+        // Save the updated product
+        await product.save();
+    } catch (error) {
+        throw error;
+    }
+};
 export const ProductServices={
     createProduct,
     getAllProducts,

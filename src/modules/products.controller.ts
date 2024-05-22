@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ProductServices, creteOrder, getAllOrder, singleProductGetById} from './products.service';
+import { ProductServices, creteOrder, getAllOrder, singleProductGetById, updateInventory} from './products.service';
 import { ProductValidationSchema, UpdateProductSchema, } from './productValidation';
 import { z } from "zod";
 import { Product } from './porducts.model';
@@ -172,28 +172,27 @@ const searchProducts = async (req: Request, res: Response) => {
 };
 
 // Create a new order
-
-export const createOrderHandler =async (req:Request,res:Response)=>{
+export const createOrderHandler = async (req: Request, res: Response) => {
     try {
-       const orderData = orderSchema .parse (req.body)
-       const newOrder = await creteOrder(orderData);
-   
-   
-       res.status(201).json({
-           success: true,
-           message: 'Order created successfully!',
-           data: newOrder
-       });
-   
+        const orderData = orderSchema.parse(req.body);
+        const newOrder = await creteOrder(orderData);
+
+        // Update inventory after creating the order
+        await updateInventory(orderData.productId, orderData.quantity);
+
+        res.status(201).json({
+            success: true,
+            message: 'Order created successfully!',
+            data: newOrder,
+        });
     } catch (error) {
-     
-       res.status(400).json({
-           success: false,
-           message: 'Order creation failed!',
-      
-       });
+        res.status(400).json({
+            success: false,
+            message: 'Order creation failed!',
+        
+        });
     }
-   }
+};
 //    get all order
 export const getAllOrders = async (req:Request, res:Response)=>{
     try {
