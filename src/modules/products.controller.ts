@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ProductServices, creteOrder} from './products.service';
+import { ProductServices, creteOrder, getAllOrder, singleProductGetById} from './products.service';
 import { ProductValidationSchema, UpdateProductSchema, } from './productValidation';
 import { z } from "zod";
 import { Product } from './porducts.model';
@@ -64,36 +64,32 @@ const getAllProducts=async (req:Request,res:Response)=>{
 }
 
 // retrieve a specific product by id
-const singleProductById= async (req:Request,res:Response)=>{
-    
+const singleProductById = async (req: Request, res: Response) => {
     try {
-            const productId=req.params.productId;
-            const result= await ProductServices.singleProductGetById(productId);
-        
-            if (result) {
-                res.json({
-                    success: true,
-                    message: "Product fetched successfully",
-                    data: result,
-                });
-            } else {
-                res.status(404).json({
-                    success: false,
-                    message: "Product not found",
-                });
-            }
+        const productId = req.params.productId;
+        const result = await singleProductGetById(productId);
 
+        if (result) {
+            res.json({
+                success: true,
+                message: 'Product fetched successfully',
+                data: result,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'Product not found',
+            });
+        }
     } catch (error) {
-        
-
+        console.error('Error fetching product:', error);
         res.status(500).json({
             success: false,
-            message: "Could not fetch product!",
-            error: error
+            message: 'Could not fetch product!',
+           
         });
     }
-
-}
+};
 
 //Update Product Information
 const updateProductById = async (req: Request, res: Response) => {
@@ -198,6 +194,31 @@ export const createOrderHandler =async (req:Request,res:Response)=>{
        });
     }
    }
+//    get all order
+export const getAllOrders = async (req:Request, res:Response)=>{
+    try {
+        const result =await getAllOrder()
+        if (result.length >0) {
+            res.json({
+                success: true,
+                message: "Order  fetched successfully",
+                data: result,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: "Order  not found",
+            });
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Could not found product!",
+            error: error
+          });
+    }
+}
 export const ProductController={
     createProduct,
     getAllProducts,

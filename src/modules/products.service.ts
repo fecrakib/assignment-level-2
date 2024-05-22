@@ -13,7 +13,7 @@ const getAllProducts = async()=>{
     return result;
 }
 
-const singleProductGetById= async (id:string)=>{
+export const singleProductGetById= async (id:string)=>{
     const result =await Product.findById(id);
     return result;
 } 
@@ -52,6 +52,11 @@ export const creteOrder = async (orderData: TProductPurchase)=>{
     const orderProduct =new Order (orderData);
     return await orderProduct .save()
 }
+
+// get all orders
+export const getAllOrder = async () =>{
+    return await Order.find()
+}
 export const ProductServices={
     createProduct,
     getAllProducts,
@@ -59,6 +64,6 @@ export const ProductServices={
     updateProductById,
     deleteProductById,
     searchProducts,
-   
+  
 }
 
