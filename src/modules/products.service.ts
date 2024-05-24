@@ -1,4 +1,4 @@
-import { string } from "zod";
+
 import { Order,  Product} from "./porducts.model";
 import { TProduct, TProductPurchase } from "./products.interfece";
 
@@ -60,7 +60,7 @@ export const getAllOrder = async () =>{
 
 // update inventory 
 export const updateInventory = async (productId: string, orderedQuantity: number) => {
-    try {
+    
         const product = await Product.findById(productId);
         if (!product) {
             throw new Error('Product not found');
@@ -78,9 +78,7 @@ export const updateInventory = async (productId: string, orderedQuantity: number
 
         // Save the updated product
         await product.save();
-    } catch (error) {
-        throw error;
-    }
+   
 };
 export const ProductServices={
     createProduct,

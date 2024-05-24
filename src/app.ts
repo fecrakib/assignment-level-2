@@ -1,19 +1,15 @@
+import express from 'express';
+import { ProductRoutes } from './modules/Products.route';
 
+const app = express();
 
-import express, { Request, Response } from 'express'
-import { ProductRoutes } from './modules/Products.route'
+app.use(express.json());
 
-const app = express()
-app.use(express.json())
+app.use('/api/products', ProductRoutes.router);
+app.use('/api/orders', ProductRoutes.orderRouter);
 
-app.use('/api/products',ProductRoutes.router)
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
 
-app.use('/api/orders',ProductRoutes.orderRouter)
-
-app.get('/', (req:Request, res:Response) => {
-  res.send('Hello World dfd!')
-})
-
-
-
-export default app
+export default app;

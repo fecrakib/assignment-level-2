@@ -1,30 +1,27 @@
-import  { Schema,   model } from 'mongoose';
-import {TInventory, TProduct, TProductPurchase, TVariant} from './products.interfece'
-
-const orderSchema = new Schema <TProductPurchase> ({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Order = exports.Product = void 0;
+const mongoose_1 = require("mongoose");
+const orderSchema = new mongoose_1.Schema({
     email: { type: String, required: true, trim: true },
     productId: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true }
 }, {
     timestamps: true
-})
-
-
+});
 // Define the schema for a variant
-const VariantSchema = new Schema<TVariant> ({
+const VariantSchema = new mongoose_1.Schema({
     type: { type: String, required: true },
     value: { type: String, required: true },
 });
-
 // Define the schema for inventory
-const InventorySchema = new Schema<TInventory> ({
+const InventorySchema = new mongoose_1.Schema({
     quantity: { type: Number, required: true },
     inStock: { type: Boolean, required: true },
 });
-
 // Define the schema for a product
-const ProductSchema= new Schema<TProduct> ({
+const ProductSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
@@ -33,9 +30,6 @@ const ProductSchema= new Schema<TProduct> ({
     variants: { type: [VariantSchema], required: true },
     inventory: { type: InventorySchema, required: true },
 });
-
-export const Product= model <TProduct>('Product',ProductSchema)
-
-
+exports.Product = (0, mongoose_1.model)('Product', ProductSchema);
 // create model
-export const Order = model <TProductPurchase> ('Order',orderSchema)
+exports.Order = (0, mongoose_1.model)('Order', orderSchema);
